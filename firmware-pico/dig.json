@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "author": "Ashutosh Sharan Srivastava",
+  "editor": "wokwi",
+  "parts": [
+    {
+      "type": "board-pi-pico-w",
+      "id": "pico",
+      "top": -99.25,
+      "left": -44.45,
+      "attrs": { "builder": "pico-sdk" }
+    },
+    {
+      "type": "wokwi-slide-potentiometer",
+      "id": "pot1",
+      "top": -206.2,
+      "left": -106.6,
+      "attrs": { "travelLength": "30" }
+    }
+  ],
+  "connections": [
+    [ "pico:GP0", "$serialMonitor:RX", "", [] ],
+    [ "pico:GP1", "$serialMonitor:TX", "", [] ],
+    [ "pot1:GND", "pico:GND.8", "black", [ "v0" ] ],
+    [ "pot1:VCC", "pico:3V3", "red", [ "h-48", "v-28.8", "h268.8", "v134.4" ] ],
+    [ "pot1:SIG", "pico:GP26", "green", [ "h19.2", "v268", "h144", "v-124.8" ] ]
+  ],
+  "dependencies": {}
+}
