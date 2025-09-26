@@ -49,7 +49,7 @@ BioAmp EXG Pill
 
 Sensor (Sim)
 
-MPU6050 Accelerometer + Gyroscope
+Potentiometer 
 
 Firmware
 
@@ -80,8 +80,6 @@ The Wokwi simulation contains the following critical files:
 
 sketch.cpp: The main C++ firmware that runs on the Pico.
 
-mpu6050.c & mpu6050.h: A simple library to read data from the MPU6050 sensor.
-
 diagram.json: Defines the hardware components (Pico, MPU6050) and their connections.
 
 CMakeLists.txt: The build configuration file that tells Wokwi how to compile the C++ code and link the necessary libraries.
@@ -105,8 +103,6 @@ The repository is organized into two main parts:
 .
 ├── firmware-pico/      # All C/C++ code for the Raspberry Pi Pico
 │   ├── sketch.cpp
-│   ├── mpu6050.c
-│   ├── mpu6050.h
 │   └── CMakeLists.txt
 │
 └── desktop-app/        # Python application for data visualization
