@@ -1,22 +1,20 @@
-NeuroTrack: An EEG-Based Stress and Depression Analyzer
-<!-- Optional: You can create a banner for your project -->
+🧠 NeuroTrack: An EEG-Based Stress and Depression Analyzer
+A B.Tech Final Year Project for the Department of Electronics & Communication Engineering at CSJM University.
 
-Welcome to the official repository for the NeuroTrack project, a B.Tech Final Year Project for the Department of Electronics & Communication Engineering at CSJM University.
+Welcome to the official repository for the NeuroTrack project. Our goal is to build an accessible, real-time system for monitoring mental wellness through brainwave analysis.
 
 📖 Table of Contents
-About the Project
+🎯 About the Project
 
-Team Members
+👥 Team Members
 
-Technology Stack
+🛠️ Technology Stack
 
-Getting Started: Wokwi Simulation
+🚀 Getting Started: Wokwi Simulation
 
-Project Structure
+📋 Workflow & Roles for Team Members
 
-Project Timeline
-
-Contributing
+📂 Project Structure
 
 🎯 About the Project
 NeuroTrack aims to develop a low-cost, non-invasive system for the real-time monitoring of mental health indicators such as anxiety, depression, and stress (ADS). The system will acquire and analyze EEG (brainwave) signals to provide objective, quantitative data, moving beyond traditional subjective assessment methods.
@@ -49,7 +47,7 @@ BioAmp EXG Pill
 
 Sensor (Sim)
 
-Potentiometer 
+Potentiometer
 
 Firmware
 
@@ -64,7 +62,7 @@ Simulation
 Wokwi Online Simulator
 
 🚀 Getting Started: Wokwi Simulation
-This section covers how to run the current simulation, which uses an MPU6050 to generate a dynamic waveform to test our data pipeline.
+This section covers how to run the current simulation, which uses a potentiometer to generate a variable analog signal to test our data pipeline.
 
 Prerequisites
 Python: Ensure you have Python 3.8+ installed.
@@ -75,37 +73,72 @@ pip install pyserial pyqt6 pyqtgraph
 
 Wokwi Project: You need access to our shared Wokwi project link.
 
-Wokwi Project Files
-The Wokwi simulation contains the following critical files:
-
-sketch.cpp: The main C++ firmware that runs on the Pico.
-
-diagram.json: Defines the hardware components (Pico, MPU6050) and their connections.
-
-CMakeLists.txt: The build configuration file that tells Wokwi how to compile the C++ code and link the necessary libraries.
-
 Running the Full Simulation
 Follow these steps in order:
 
-Start the Wokwi Simulation: Open the Wokwi project and press the "Start Simulation" button. The code will compile, and you should see the Pico start running.
+Start Wokwi Simulation: Open the Wokwi project and press the "Start Simulation" button.
 
-Identify the COM Port: The Wokwi simulation will connect to your computer over a virtual serial port. The application needs to know which port to listen to. This will be specified in the controller.py file.
-
-Run the Python Desktop App: Navigate to the desktop-app directory in your local project folder and run the main application file from your terminal:
+Run Python App: Navigate to the desktop-app directory in your local project folder and run the main application file from your terminal:
 
 python main_app.py
 
-View the Graph: The Python application window should appear, and you will see a real-time graph plotting the simulated EEG data coming from the MPU6050 in Wokwi.
+View the Graph: The Python application window will appear. As you turn the potentiometer knob in Wokwi, you will see the graph on the desktop app move up and down in real-time.
+
+📋 Workflow & Roles for Team Members
+This section outlines our development process and assigns initial focus areas. All work should follow the Git workflow described at the end.
+
+Initial Focus Areas:
+Ashutosh (Team Lead & UI/UX):
+
+Oversee the integration of all parts.
+
+Lead the development of the Python desktop application's UI/UX (view.py) and application logic (controller.py).
+
+Aditya (Algorithm Specialist):
+
+Begin research and development of the Fast Fourier Transform (FFT) algorithm.
+
+Focus on how to process the incoming data stream to extract frequency information.
+
+Sai (Firmware Engineer):
+
+Take ownership of the Pico firmware (sketch.cpp).
+
+Ensure the potentiometer data is read cleanly and transmitted reliably over USB.
+
+Abhay & Shefali (Hardware & Research):
+
+Take the lead on the physical hardware setup when the components arrive.
+
+Research the BioAmp EXG Pill, focusing on electrode placement for EEG and best practices for getting a clean signal.
+
+Git Contribution Workflow:
+Rule #1: Never commit directly to the main branch.
+
+Create a Branch: For any new feature or fix, create a new branch from main.
+
+# Example: git checkout -b feature/python-ui-update
+git checkout -b <type>/<short-description>
+
+Commit Your Work: Make your changes and commit them with clear, descriptive messages.
+
+Push Your Branch: Push your new branch to the GitHub repository.
+
+git push origin <your-branch-name>
+
+Create a Pull Request (PR): Go to the GitHub repository and open a Pull Request to merge your branch into main.
+
+Review & Merge: At least one other team member must review the PR before it is merged.
 
 📂 Project Structure
 The repository is organized into two main parts:
 
 .
-├── firmware-pico/      # All C/C++ code for the Raspberry Pi Pico
+├── 펌 firmware-pico/      # All C/C++ code for the Raspberry Pi Pico
 │   ├── sketch.cpp
 │   └── CMakeLists.txt
 │
-└── desktop-app/        # Python application for data visualization
+└── 💻 desktop-app/        # Python application for data visualization
     ├── model.py        # Handles serial communication
     ├── view.py         # Defines the GUI layout (PyQt6)
     ├── controller.py   # Connects the model and view (app logic)
