@@ -1,145 +1,153 @@
-🧠 NeuroTrack: An EEG-Based Stress and Depression Analyzer
-A B.Tech Final Year Project for the Department of Electronics & Communication Engineering at CSJM University.
+<div align="center">
 
-Welcome to the official repository for the NeuroTrack project. Our goal is to build an accessible, real-time system for monitoring mental wellness through brainwave analysis.
+🧠 NeuroTrack: An EEG-Based Stress & Depression Analyzer
+A professional, real-time EEG monitoring dashboard for clinical environments.
 
-📖 Table of Contents
-🎯 About the Project
+A preview of the NeuroTrack dashboard in action.
 
-👥 Team Members
+</div>
 
-🛠️ Technology Stack
+✨ Core Features
+Real-Time EEG Visualization: View a live, scrolling graph of EEG waveform data.
 
-🚀 Getting Started: Wokwi Simulation
+Frequency Spectrum Analysis: See a bar chart of brainwave power in different bands (Alpha, Beta, etc.).
 
-📋 Workflow & Roles for Team Members
+Advanced Clinical Workflow: Includes a Three-Tiered Triage Strategy for patient assessment:
 
-📂 Project Structure
+-Full Calibration: A 3-minute personal baseline for maximum accuracy in routine checkups.
 
-🎯 About the Project
-NeuroTrack aims to develop a low-cost, non-invasive system for the real-time monitoring of mental health indicators such as anxiety, depression, and stress (ADS). The system will acquire and analyze EEG (brainwave) signals to provide objective, quantitative data, moving beyond traditional subjective assessment methods.
+-Guided Relaxation: A 90-second "best-effort" baseline for stressed but cooperative patients.
 
-The core of our analysis is based on the Alpha-to-Beta brainwave ratio, a scientifically recognized indicator of a person's cognitive and emotional state.
+-Immediate Monitoring: An emergency fallback using population data for acute events.
 
-👥 Team Members
-Ashutosh Sharan Srivastava
+Patient Report Generation: Instantly print or save a PDF report of the current session snapshot.
 
-Aditya Gupta
+Cross-Platform: The application can be run and built for both Windows and Linux.
 
-Sai Ujwal Ramula
+🚀 Quick Start for End-Users
+This guide is for users who just want to run the NeuroTrack application without dealing with the source code.
 
-Abhay Pratap Singh
+Download the Application:
 
-Shefali Yadav
+Go to the Releases Page of this GitHub repository.
 
-🛠️ Technology Stack
-Component
+Download the latest version for your operating system:
 
-Technology
+For Windows: NeuroTrack-Windows.zip (contains main_app.exe)
 
-Hardware
+For Linux: NeuroTrack-Linux.zip (contains the main_app executable)
 
-Raspberry Pi Pico
+Run the Application:
 
-Sensor (Final)
+<details>
+<summary>🪟 On Windows</summary>
 
-BioAmp EXG Pill
+Unzip the NeuroTrack-Windows.zip file.
 
-Sensor (Sim)
+Double-click on main_app.exe to launch the dashboard. That's it!
 
-Potentiometer
+</details>
 
-Firmware
+<details>
+<summary>🐧 On Ubuntu/Linux</summary>
 
-C/C++ (using the Raspberry Pi Pico SDK)
+Unzip the NeuroTrack-Linux.zip file.
 
-Desktop App
+Open a terminal in the folder where you unzipped the files.
 
-Python 3.x with PyQt6 & PyQtGraph
+Make the application executable by running this command:
 
-Simulation
+chmod +x main_app
 
-Wokwi Online Simulator
+Launch the dashboard by running:
 
-🚀 Getting Started: Wokwi Simulation
-This section covers how to run the current simulation, which uses a potentiometer to generate a variable analog signal to test our data pipeline.
+./main_app
+
+</details>
+
+💻 Guide for Developers
+This guide is for team members and contributors who want to run the application from the source code.
 
 Prerequisites
-Python: Ensure you have Python 3.8+ installed.
+Git
 
-Required Libraries: Install the necessary Python packages using pip:
+Python 3.8+
 
-pip install pyserial pyqt6 pyqtgraph
+1. Clone the Repository
+Open a terminal and clone the project to your local machine:
 
-Wokwi Project: You need access to our shared Wokwi project link.
+git clone [https://github.com/your-username/NeuroTrack.git](https://github.com/your-username/NeuroTrack.git)
+cd NeuroTrack
 
-Running the Full Simulation
-Follow these steps in order:
+2. Set Up & Activate the Virtual Environment
+<details>
+<summary>🪟 On Windows (PowerShell)</summary>
 
-Start Wokwi Simulation: Open the Wokwi project and press the "Start Simulation" button.
+Create the environment:
 
-Run Python App: Navigate to the desktop-app directory in your local project folder and run the main application file from your terminal:
+python -m venv .venv
 
+Activate it: (You may need to run Set-ExecutionPolicy RemoteSigned -Scope CurrentUser in an Admin PowerShell once if this fails).
+
+.\.venv\Scripts\activate
+
+Your terminal prompt will now start with (.venv).
+
+</details>
+
+<details>
+<summary>🐧 On Ubuntu/Linux (Bash)</summary>
+
+Create the environment:
+
+python3 -m venv .venv
+
+Activate it:
+
+source .venv/bin/activate
+
+Your terminal prompt will now start with (.venv).
+
+</details>
+
+3. Install Dependencies
+Navigate into the application folder and install the required libraries:
+
+cd desktop-app
+pip install -r requirements.txt
+
+4. Run the Application
+Launch the NeuroTrack dashboard:
+
+# On Windows
 python main_app.py
 
-View the Graph: The Python application window will appear. As you turn the potentiometer knob in Wokwi, you will see the graph on the desktop app move up and down in real-time.
+# On Ubuntu/Linux
+python3 main_app.py
 
-📋 Workflow & Roles for Team Members
-This section outlines our development process and assigns initial focus areas. All work should follow the Git workflow described at the end.
+📦 Building the Executable from Source
+These instructions are for creating the standalone .exe or Linux executable.
 
-Initial Focus Areas:
-Ashutosh (Team Lead & UI/UX):
+1. Install PyInstaller
+Make sure your virtual environment is active and run:
 
-Oversee the integration of all parts.
+pip install pyinstaller
 
-Lead the development of the Python desktop application's UI/UX (view.py) and application logic (controller.py).
+2. Run the Build Command
+<details>
+<summary>🪟 Building the .exe on Windows</summary>
 
-Aditya (Algorithm Specialist):
+Navigate to the desktop-app folder and run this command. Note the semicolon ; separator.
 
-Begin research and development of the Fast Fourier Transform (FFT) algorithm.
+pyinstaller --onefile --windowed --add-data "assets;assets" main_app.py
 
-Focus on how to process the incoming data stream to extract frequency information.
+Your final main_app.exe will be in the desktop-app/dist/ folder.
 
-Sai (Firmware Engineer):
+</details>
 
-Take ownership of the Pico firmware (sketch.cpp).
+<details>
+<summary>🐧 Building the Executable on Ubuntu/Linux</summary>
 
-Ensure the potentiometer data is read cleanly and transmitted reliably over USB.
+Navigate to the desktop-app folder and run this command. Note the colon : separator.
 
-Abhay & Shefali (Hardware & Research):
-
-Take the lead on the physical hardware setup when the components arrive.
-
-Research the BioAmp EXG Pill, focusing on electrode placement for EEG and best practices for getting a clean signal.
-
-Git Contribution Workflow:
-Rule #1: Never commit directly to the main branch.
-
-Create a Branch: For any new feature or fix, create a new branch from main.
-
-# Example: git checkout -b feature/python-ui-update
-git checkout -b <type>/<short-description>
-
-Commit Your Work: Make your changes and commit them with clear, descriptive messages.
-
-Push Your Branch: Push your new branch to the GitHub repository.
-
-git push origin <your-branch-name>
-
-Create a Pull Request (PR): Go to the GitHub repository and open a Pull Request to merge your branch into main.
-
-Review & Merge: At least one other team member must review the PR before it is merged.
-
-📂 Project Structure
-The repository is organized into two main parts:
-
-.
-├── 펌 firmware-pico/      # All C/C++ code for the Raspberry Pi Pico
-│   ├── sketch.cpp
-│   └── CMakeLists.txt
-│
-└── 💻 desktop-app/        # Python application for data visualization
-    ├── model.py        # Handles serial communication
-    ├── view.py         # Defines the GUI layout (PyQt6)
-    ├── controller.py   # Connects the model and view (app logic)
-    └── main_app.py     # Entry point to run the application
+pyinstaller --onefile --windowed --add-data "assets:assets" main_app.py
