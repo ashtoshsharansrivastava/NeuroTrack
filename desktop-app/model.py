@@ -3,31 +3,57 @@ from PyQt6.QtCore import QObject, pyqtSignal
 
 class NeuroDataModel(QObject):
     """
-    The Model in MVC. Handles data generation and business logic.
-    It emits signals when data is updated, allowing the View to react.
+    The Model in MVC. Handles data generation, storage, and business logic.
+    It emits signals when data is updated, allowing other parts of the app to react.
     """
     data_updated = pyqtSignal(dict)
     
     def __init__(self):
         super().__init__()
-        self.patient_name = "Jane Doe"
-        self.patient_id = "PID-98765"
+        # --- Configuration & State ---
+        self.is_simulation = True
+        self.ip_address = None
+        self.connection_status = "Disconnected"
+        
+        # --- Patient Data ---
+        self.patient_data = {
+            "name": "N/A", "age": "N/A", "weight": "N/A",
+            "issues": "N/A", "sleep": "N/A",
+        }
+        
+        # --- Session Data ---
         self.session_time = 0
-        self.eeg_waveform = np.zeros(500) # 2 seconds of data at 250Hz
+        self.eeg_waveform = np.zeros(500) # Buffer for 2 seconds of data at 250Hz
         self.alpha_beta_ratio = 1.0
         self.cognitive_state = "Idle"
-        self.state_color = "#A0A0A0"
+        self.state_color = "#A0A0A0" # Neutral gray for idle state
         self.acute_event = False
         self.fft_data = {'Theta': 0, 'Alpha': 0, 'Beta': 0, 'Gamma': 0}
         
+        # --- Internal Simulation Variables ---
         self.time_offset = 0
         self.ratio_history = [1.0]
+
+    def set_patient_data(self, data):
+        """Stores the detailed patient information for the session."""
+        self.patient_data = data
+        self.data_updated.emit(self.get_data_snapshot())
+    
+    def set_connection_status(self, status):
+        """Updates the current connection status."""
+        self.connection_status = status
+        self.data_updated.emit(self.get_data_snapshot())
 
     def update_data(self):
         """
         Generates a new data point and updates the model state.
-        This method simulates the continuous flow of data from the sensor.
+        This method simulates the continuous flow of data from a sensor.
         """
+        if not self.is_simulation:
+            # In a real application, this is where you would process live hardware data.
+            # For now, we do nothing if not in simulation mode.
+            return 
+
         SAMPLE_RATE = 250
         self.session_time += 1000 / SAMPLE_RATE
         self.time_offset += 1 / SAMPLE_RATE
@@ -40,7 +66,7 @@ class NeuroDataModel(QObject):
         noise = (np.random.rand() - 0.5) * 10
         new_amplitude = alpha_wave + beta_wave + noise
         
-        # Update waveform buffer using a rolling window
+        # Update the waveform buffer using a rolling window for a smooth scroll effect
         self.eeg_waveform = np.roll(self.eeg_waveform, -1)
         self.eeg_waveform[-1] = new_amplitude
 
@@ -52,23 +78,23 @@ class NeuroDataModel(QObject):
         # --- State Classification Logic ---
         if self.alpha_beta_ratio > 2.5:
             self.cognitive_state = "Calm"
-            self.state_color = "#2ECC71"  # Green
+            self.state_color = "#2ECC71" # Green
         elif self.alpha_beta_ratio > 1.5:
             self.cognitive_state = "Neutral / Focused"
-            self.state_color = "#F1C40F"  # Yellow
+            self.state_color = "#F1C40F" # Yellow
         else:
             self.cognitive_state = "High Cognitive Load"
-            self.state_color = "#E74C3C"  # Red
+            self.state_color = "#E74C3C" # Red
 
         # --- Acute Event Detection Logic ---
         last_ratio = self.ratio_history[-1]
         self.acute_event = (last_ratio - self.alpha_beta_ratio) > 2.0
         if self.acute_event:
             self.cognitive_state = "ACUTE EVENT DETECTED"
-            self.state_color = "#E74C3C"
-
+        
+        # Store the last second of ratio history for event detection
         self.ratio_history.append(self.alpha_beta_ratio)
-        if len(self.ratio_history) > 250: # Keep last second of history
+        if len(self.ratio_history) > 250: 
             self.ratio_history.pop(0)
             
         # --- FFT Data Simulation ---
@@ -79,14 +105,13 @@ class NeuroDataModel(QObject):
             'Gamma (>30Hz)': np.random.rand() * 150
         }
         
-        # Emit a signal with a copy of the new data for the View to update
+        # Emit a signal containing a dictionary of the new data for the View to update
         self.data_updated.emit(self.get_data_snapshot())
 
     def get_data_snapshot(self):
         """Returns a dictionary of the current model state."""
         return {
-            "patientName": self.patient_name,
-            "patientId": self.patient_id,
+            "patientData": self.patient_data,
             "sessionTime": self.session_time,
             "eegWaveform": self.eeg_waveform,
             "fftData": self.fft_data,
@@ -94,10 +119,11 @@ class NeuroDataModel(QObject):
             "cognitiveState": self.cognitive_state,
             "stateColor": self.state_color,
             "acuteEvent": self.acute_event,
+            "connectionStatus": self.connection_status,
         }
         
     def reset(self):
-        """Resets the model to its initial state for a new session."""
+        """Resets the model's session data to its initial state."""
         self.session_time = 0
         self.eeg_waveform = np.zeros(500)
         self.alpha_beta_ratio = 1.0
@@ -106,4 +132,5 @@ class NeuroDataModel(QObject):
         self.acute_event = False
         self.time_offset = 0
         self.ratio_history = [1.0]
+        # Emit the reset state so the UI clears
         self.data_updated.emit(self.get_data_snapshot())

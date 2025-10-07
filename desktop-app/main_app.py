@@ -6,18 +6,21 @@ from model import NeuroDataModel
 from controller import NeuroTrackController
 
 def main():
-    """Main function to run the NeuroTrack application."""
+    """Main function to initialize and run the NeuroTrack application."""
     app = QApplication(sys.argv)
     
-    # Create instances of the MVC components
+    # 1. Create instances of the core MVC components
     model = NeuroDataModel()
     view = NeuroTrackView()
-    # The controller wires the model and view together
     controller = NeuroTrackController(model=model, view=view)
     
-    view.resize(1280, 800)
-    view.show()
+    # 2. Hand control over to the controller to manage the startup sequence.
+    # The controller will show the initial dialogs and then show the main view
+    # only when the setup is complete.
+    controller.run_startup_sequence()
     
+    # 3. Start the application's main event loop. This line will only
+    #    be reached after the main window is closed.
     sys.exit(app.exec())
 
 if __name__ == '__main__':
